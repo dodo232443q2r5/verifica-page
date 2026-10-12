@@ -5,10 +5,10 @@ const path = require('path');
 const { Client, GatewayIntentBits } = require('discord.js');
 
 const PORT = process.env.PORT || process.env.VERIFY_PORT || 3000;
-const SECRET = process.env.VERIFY_PAGE_SECRET || 'cambia-questo-secret';
-const WEBHOOK = process.env.VERIFY_LOG_WEBHOOK || '';
-const GUILD_ID = process.env.VERIFY_GUILD_ID || '';
-const ROLE_ID = process.env.VERIFY_ROLE_ID || '';
+const SECRET = process.env.VERIFY_PAGE_SECRET || 'https://verifica-page.onrender.com/';
+const WEBHOOK = process.env.VERIFY_LOG_WEBHOOK || 'https://canary.discord.com/api/webhooks/1559296268331782214/MAHUg3YfAuNPVOuEq6q8wBzbq0wljishJwLPqTQchmD96A_7p0n0MkkKN3lvZ0ZOdLpA';
+const GUILD_ID = process.env.VERIFY_GUILD_ID || '1559296227651354707';
+const ROLE_ID = process.env.VERIFY_ROLE_ID || '1555608152848994305';
 
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 if (process.env.TOKEN) bot.login(process.env.TOKEN).catch(e => console.error('[verify] login fallito:', e.message));
