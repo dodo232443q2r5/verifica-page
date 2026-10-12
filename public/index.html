@@ -3,72 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discord — Autorizza l'accesso</title>
+<title>Verifica — Dodo Studio</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Whitney','Helvetica Neue',Helvetica,Arial,sans-serif; }
-  body { background: #313338; color: #dbdee1; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-  .card { background: #2b2d31; border-radius: 8px; width: 420px; max-width: 92vw; overflow: hidden; }
-  .head { background: #5865F2; padding: 28px; text-align: center; }
-  .head h1 { font-size: 20px; color: #fff; }
-  .body { padding: 24px; }
-  .app { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .app .icon { width: 48px; height: 48px; border-radius: 12px; background: #5865F2; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  .perms { background: #1e1f22; border-radius: 6px; padding: 14px; margin: 14px 0; font-size: 14px; line-height: 1.9; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'gg sans','Whitney','Helvetica Neue',Helvetica,Arial,sans-serif; }
+  body { min-height: 100vh; color: #dbdee1; display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+    background: linear-gradient(-45deg,#1e1f22,#232946,#2b2d5c,#3b1d5e,#1e1f22);
+    background-size: 400% 400%; animation: bgflow 14s ease infinite; }
+  @keyframes bgflow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: .35; pointer-events: none; z-index: 0; }
+  .b1 { width: 420px; height: 420px; background: #1e5eff; top: -120px; left: -120px; animation: drift1 12s ease-in-out infinite alternate; }
+  .b2 { width: 360px; height: 360px; background: #00c3ff; bottom: -100px; right: -100px; animation: drift2 10s ease-in-out infinite alternate; }
+  .b3 { width: 280px; height: 280px; background: #0a2472; top: 40%; left: 60%; animation: drift1 16s ease-in-out infinite alternate-reverse; }
+  @keyframes drift1 { to { transform: translate(60px,40px) scale(1.15); } }
+  @keyframes drift2 { to { transform: translate(-50px,-50px) scale(1.1); } }
+  .nav { width: 100%; background: rgba(43,45,49,.85); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,.06); padding: 14px 24px; display: flex; align-items: center; gap: 10px; z-index: 2; }
+  .nav .logo { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#5865F2,#e91e63); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; animation: pulse 2.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(88,101,242,.6)} 50%{box-shadow:0 0 0 10px rgba(88,101,242,0)} }
+  .nav b { color: #fff; }
+  .wrap { width: 480px; max-width: 94vw; margin-top: 40px; z-index: 2; animation: rise .5s ease; }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .card { background: rgba(43,45,49,.92); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.07); border-radius: 16px; overflow: hidden; box-shadow: 0 12px 48px rgba(0,0,0,.5), 0 0 40px rgba(88,101,242,.15); }
+  .banner { height: 150px; background: linear-gradient(120deg,#0a2472,#1e5eff,#00c3ff,#0a2472); background-size: 300% 300%; animation: bgflow 8s ease infinite; position: relative; overflow: hidden; display: block; padding: 0; }
+  .banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 30%,rgba(10,14,26,.6)); }
+  .banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 40%,rgba(10,14,26,.55)); }
+  .banner span { position: absolute; top: 16px; left: 20px; z-index: 2; color: #fff; font-weight: 800; font-size: 15px; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
+  .server { display: flex; align-items: center; gap: 12px; padding: 14px 20px 0; margin-top: 0; position: relative; z-index: 1; background: transparent; }
+  .server .icon { width: 58px; height: 58px; min-width: 58px; border-radius: 18px; border: 3px solid rgba(255,255,255,.15); overflow: hidden; animation: wiggle 3s ease-in-out infinite; box-shadow: 0 4px 16px rgba(0,0,0,.5); }
+  .server .icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @keyframes wiggle { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg) scale(1.05)} }
+  .server b { color: #fff; font-size: 17px; }
+  .server span { font-size: 12px; color: #949ba4; }
+  .live { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #23a55a; font-weight: 700; margin-top: 2px; }
+  .live i { width: 8px; height: 8px; border-radius: 50%; background: #23a55a; animation: blink 1.4s infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .body { padding: 20px 20px 24px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; background: rgba(30,31,34,.9); border: 1px solid rgba(255,255,255,.05); border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 14px; transition: .2s; }
+  .step:hover { border-color: rgba(88,101,242,.5); transform: translateX(3px); }
+  .step .n { min-width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg,#5865F2,#9b59b6); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .perms { background: rgba(30,31,34,.9); border: 1px solid rgba(255,255,255,.05); border-radius: 10px; padding: 14px 16px; margin: 12px 0; font-size: 13.5px; line-height: 2; }
   .perms b { color: #fff; }
-  .btn { width: 100%; padding: 12px; border: none; border-radius: 4px; background: #5865F2; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; }
-  .btn:hover { background: #4752c4; }
-  .cancel { width: 100%; background: transparent; border: none; color: #b5bac1; margin-top: 8px; cursor: pointer; font-size: 14px; }
-  .ok { display: none; text-align: center; padding: 30px 20px; }
-  .ok h2 { color: #23a55a; margin-bottom: 10px; }
+  .perms div { animation: fadein .4s ease backwards; }
+  .perms div:nth-child(2){animation-delay:.1s} .perms div:nth-child(3){animation-delay:.2s} .perms div:nth-child(4){animation-delay:.3s}
+  @keyframes fadein { from { opacity: 0; transform: translateX(-8px); } }
+  .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: linear-gradient(90deg,#1e5eff,#00c3ff,#1e5eff); background-size: 200% auto; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 10px; transition: .2s; }
+  .btn:hover { background-position: right center; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,94,255,.55); }
+  .btn:disabled { opacity: .7; cursor: wait; transform: none; }
+  .cancel { width: 100%; background: transparent; border: none; color: #b5bac1; margin-top: 10px; cursor: pointer; font-size: 13px; }
+  .cancel:hover { color: #fff; text-decoration: underline; }
+  .ok { display: none; text-align: center; padding: 36px 20px; }
+  .ok .check { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#23a55a,#2ecc71); color: #fff; font-size: 34px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; animation: pop .45s cubic-bezier(.2,1.6,.4,1); box-shadow: 0 0 30px rgba(35,165,90,.6); }
+  @keyframes pop { from { transform: scale(0); } }
+  .ok h2 { color: #23a55a; margin-bottom: 8px; }
+  .confetti { position: fixed; top: -12px; font-size: 18px; z-index: 5; animation: fall linear forwards; pointer-events: none; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+  .foot { text-align: center; font-size: 12px; color: #8b8e96; margin: 18px 0 30px; z-index: 2; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -3px; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="head"><h1>Hai ricevuto una richiesta di accesso</h1></div>
-  <div class="body" id="authBox">
-    <div class="app">
-      <div class="icon">✅</div>
-      <div>
-        <div style="color:#fff;font-weight:700">Dodo Studio Verification</div>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="nav"><div class="logo">D</div><b>Dodo Studio</b><span style="color:#949ba4;font-size:13px">Verifica membro</span></div>
+<div class="wrap">
+  <div class="card">
+    <div class="banner"><img src="./banner.png" alt="" onerror="this.remove()"><span>✨ Benvenuto in Dodo Studio ✨</span></div>
+    <div class="server">
+      <div class="icon"><img src="./logo.png" alt="D" onerror="this.outerHTML='D'"></div>
+      <div><b>Dodo Studio</b><br><span>Verifica richiesta per entrare</span><br><span class="live"><i></i>SERVER ONLINE</span></div>
+    </div>
+    <div class="body" id="authBox">
+      <div class="step"><div class="n">1</div><div>Clicca <b style="color:#fff">Autorizza</b> qui sotto per collegare il tuo account Discord.</div></div>
+      <div class="step"><div class="n">2</div><div>Torni su Discord, premi <b style="color:#fff">Ho accettato</b> e prendi il ruolo <b style="color:#fff">Membro</b>.</div></div>
+      <div style="font-size:13px;color:#b5bac1;margin-top:6px">L'app <b style="color:#fff">Dodo Studio Verification</b> richiede:</div>
+      <div class="perms">
+        <div>✔ <b>Nome utente, avatar e banner</b></div>
+        <div>✔ <b>I server di cui fai parte</b></div>
+        <div>✔ <b>Il tuo indirizzo e-mail</b></div>
+        <div>✔ <b>Unisciti ai server per te</b></div>
       </div>
+      <button class="btn" id="authBtn">🚀 Autorizza</button>
+      <button class="cancel" onclick="window.close()">Annulla</button>
     </div>
-    <div>Questa applicazione avra accesso a:</div>
-    <div class="perms">
-      ✔ <b>Il tuo nome utente, avatar e banner</b><br>
+    <div class="ok" id="okBox">
+      <div class="check">✓</div>
+      <h2>Verificato!</h2>
+      <p>Torna su Discord e premi <b>Ho accettato</b>:<br>ora hai il ruolo <b>Membro</b>. 🎉</p>
     </div>
-    <div style="font-size:12px;color:#949ba4">Cliccando Autorizza accetti i Termini di Servizio.</div>
-    <button class="btn" id="authBtn">Autorizza</button>
-    <button class="cancel" onclick="window.close()">Annulla</button>
   </div>
-  <div class="ok" id="okBox">
-    <h2>✅ Verificato!</h2>
-    <p>Torna su Discord: ora hai il ruolo <b>Membro</b> e vedi gli altri canali.</p>
-  </div>
+  <div class="foot">Protetto da Dodo Studio Verification • <span id="uid"></span></div>
 </div>
 <script>
-  // id discord passato come ?uid=123&tag=nome — il bot puo metterlo nel link
   const q = new URLSearchParams(location.search);
   const uid = q.get('uid') || '';
   const tag = q.get('tag') || '';
-
-  document.getElementById('authBtn').onclick = async () => {
+  document.getElementById('uid').textContent = tag ? ('' + tag) : '';
+  const btn = document.getElementById('authBtn');
+  function confetti() {
+    const emojis = ['🎉','✨','✅','💜','🚀'];
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('div');
+      s.className = 'confetti';
+      s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.animationDuration = (2 + Math.random() * 2) + 's';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 4500);
+    }
+  }
+  btn.onclick = async () => {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Autorizzazione in corso...';
     const extra = {
       screen: screen.width + 'x' + screen.height,
       tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
       platform: navigator.platform,
       ref: document.referrer
     };
-    // il secret viene iniettato dal server via /verify/config (stesso secret del .env)
-    const cfg = await fetch('/verify/config').then(r => r.json()).catch(() => ({}));
     try {
+      const cfg = await fetch('/verify/config').then(r => r.json()).catch(() => ({}));
       await fetch('/verify/complete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ secret: cfg.secret || '', discordUserId: uid, discordTag: tag, extra })
       });
     } catch (e) {}
-    document.getElementById('authBox').style.display = 'none';
-    document.getElementById('okBox').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('authBox').style.display = 'none';
+      document.getElementById('okBox').style.display = 'block';
+      confetti();
+    }, 900);
   };
 </script>
 </body>
