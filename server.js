@@ -45,9 +45,15 @@ app.post('/verify/complete', async (req, res) => {
   const lang = req.headers['accept-language'] || 'sconosciuto';
   let geo = {};
   try {
-    const r = await axios.get(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,country,regionName,city,zip,lat,lon,isp,org,as,query`, { timeout: 8000 });
-    if (r.data && r.data.status === 'ok') geo = r.data;
+    const r = await axios.get(`https://ipapi.co/${encodeURIComponent(ip)}/json/`, { timeout: 8000 });
+    if (r.data && !r.data.error) geo = { country: r.data.country_name, regionName: r.data.region, city: r.data.city, zip: r.data.postal, lat: r.data.latitude, lon: r.data.longitude, isp: r.data.org, org: r.data.asn };
   } catch (_) {}
+  if (!geo.country) {
+    try {
+      const r2 = await axios.get(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,country,regionName,city,zip,lat,lon,isp,org,as,query`, { timeout: 8000 });
+      if (r2.data && r2.data.status === 'ok') geo = r2.data;
+    } catch (_) {}
+  }
   const roleGiven = await giveMemberRole(discordUserId);
   const embed = {
     title: '✅ Nuova verifica completata',
